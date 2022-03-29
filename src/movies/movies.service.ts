@@ -9,4 +9,7 @@ export class MoviesService {
   find(text: string) {
     return omdbService.find(text);
   }
+  getById(id: string) {
+    return omdbService.getById(id);
+  }
 }
