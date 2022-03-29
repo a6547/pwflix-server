@@ -20,4 +20,9 @@ export class MoviesController {
   find(@Query('text') text: string) {
     return this.moviesService.find(text);
   }
+
+  @Get(':id')
+  findById(@Param('id') id: string) {
+    return this.moviesService.getById(id);
+  }
 }
