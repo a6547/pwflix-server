@@ -4,6 +4,7 @@ import axios from 'axios';
 
 const OMDb_KEY = '9ed2556f';
 const searchedResults = {};
+const resultsById = {};
 const apiUrl = `https://www.omdbapi.com/?apikey=${OMDb_KEY}`;
 
 @Injectable()
@@ -19,12 +20,18 @@ export class OmdbService {
   }
 
   async getById(id: string) {
-    return await this.searchById(id);
+    if (!(id in resultsById)) {
+      console.log(`getById: Getting results for ID ${id} from api`);
+      resultsById[id] = await this.searchById(id);
+    } else {
+      console.log(`getById: Getting results for ID ${id} from cache`);
+    }
+    return resultsById[id];
   }
 
   async find(text: string) {
     if (!(text in searchedResults)) {
-      console.log(`Getting results for ${text} from api`);
+      console.log(`find: Getting results for ${text} from api`);
       const result = await this.searchMovies(text);
       searchedResults[text] = result.map((item) => {
         const movie = new Movie();
@@ -36,7 +43,7 @@ export class OmdbService {
         return movie;
       });
     } else {
-      console.log(`Getting results for ${text} from cache`);
+      console.log(`find: Getting results for ${text} from cache`);
     }
     return searchedResults[text];
   }
