@@ -16,8 +16,8 @@ import { UpdateMovieDto } from './dto/update-movie.dto';
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
-  @Get()
-  find(@Query('text') text: string) {
+  @Get(':text')
+  find(@Param('text') text: string) {
     return this.moviesService.find(text);
   }
 
